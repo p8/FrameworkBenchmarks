@@ -4,6 +4,7 @@
 class HelloWorld < Roda
   plugin :hooks
   plugin :render, escape: true, layout_opts: { cache_key: "default_layout" }
+  plugin :plain_hash_response_headers
 
   def bounded_queries
     queries = request.params["queries"].to_i
