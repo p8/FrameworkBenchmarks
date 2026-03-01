@@ -107,12 +107,25 @@ class HelloWorld
     fortunes << { 'id' => 0, 'message' => 'Additional fortune added at request time.' }
     fortunes.sort_by! { |item| item['message'] }
 
-    buffer = String.new
-    buffer << TEMPLATE_PREFIX
-    fortunes.each do |item|
-      buffer << "<tr><td>#{item['id']}</td><td>#{ERB::Escape.html_escape(item['message'])}</td></tr>"
-    end
-    buffer << TEMPLATE_POSTFIX
+    rows = fortunes.map { |fortune| "<tr><td>#{fortune['id']}</td><td>#{ERB::Escape.html_escape(fortune['message'])}</td></tr>" }.join
+
+    <<-HTML
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Fortunes</title>
+        </head>
+        <body>
+          <table>
+            <tr>
+              <th>id</th>
+              <th>message</th>
+            </tr>
+            #{rows}
+          </table>
+        </body>
+      </html>
+    HTML
   end
 
   def update_worlds(count)
